@@ -21,9 +21,14 @@ char *get_next_line(int fd)
     if (ft_findreturn(buffer) != 0)
       break;
   }
-  r_ligne = ft_strdup(buffer, ft_findreturn(buffer) + 1);
-  buffer = ft_substr(buffer, ft_findreturn(buffer) + 1);
-  return (r_ligne);
+  if (r_read > 0)
+  {
+    r_ligne = ft_strdup(buffer, ft_findreturn(buffer) + 1);
+    buffer = ft_substr(buffer, ft_findreturn(buffer) + 1);
+    return (r_ligne);
+  }
+  else
+    return (0);
 }
 
 int main (void)
