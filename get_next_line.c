@@ -1,4 +1,5 @@
 #include "get_next_line_utils.c"
+#include "get_next_line.h"
 
  int BUFFER_SIZE = 10;
 
@@ -9,8 +10,8 @@ char *get_next_line(int fd)
   char        *r_ligne;
   static char *buffer;
 
-  r_read = 1;
-  while (r_read > 0)
+  r_read = 0;
+  while (r_read > -1)
   {
     lecture = (char *)malloc(sizeof(char *) * (BUFFER_SIZE + 1));
     if (read(fd, lecture, 0) == -1)
@@ -21,10 +22,10 @@ char *get_next_line(int fd)
     if (ft_findreturn(buffer) != 0)
       break;
   }
-  if (r_read > 0)
+  r_ligne = ft_bufdup(buffer, ft_findreturn(buffer) + 1);
+  if (r_read > 0 && r_ligne != 0)
   {
-    r_ligne = ft_strdup(buffer, ft_findreturn(buffer) + 1);
-    buffer = ft_substr(buffer, ft_findreturn(buffer) + 1);
+    buffer = ft_subbuf(buffer, ft_findreturn(buffer) + 1);
     return (r_ligne);
   }
   else

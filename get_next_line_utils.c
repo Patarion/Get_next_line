@@ -5,11 +5,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-char  *ft_strdup(const char *s, int end)
+char  *ft_bufdup(const char *s, int end)
 {
   int j;
   char *ptr;
-
+  if (s[end - 1] == '\\' && s[end] == '0')
+    return (0);
   j = 0;
   ptr = (char *)malloc(sizeof(*ptr) * (end + 1));
   if (!ptr)
@@ -44,7 +45,7 @@ char	*ft_strconcatenate(const char *s1, const char *s2)
   if (!s2)
     return (0);
   else if (!s1)
-    return(ft_strdup(s2, ft_strlen(s2)));
+    return(ft_bufdup(s2, ft_strlen(s2)));
   while (s1[i] != '\0')
     i++;
   while (s2[j] != '\0')
@@ -60,7 +61,7 @@ char	*ft_strconcatenate(const char *s1, const char *s2)
   return (ptr);
 }
 
-char	*ft_substr(const char *s, int start)
+char	*ft_subbuf(const char *s, int start)
 {
   char  *ptr;
   int   i;
@@ -88,7 +89,7 @@ int ft_findreturn(char *s)
   i = 0;
   while (s[i] != '\0')
     {
-      if ((s[i] == '\\' && s[i + 1] == 'n') || s[i] == '\n')
+      if ((s[i] == '\\' && (s[i + 1] == 'n' || s[i + 1] == '0')) || s[i] == '\n')
         return (i);
       i++;
     }
