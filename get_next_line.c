@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 11:17:33 by jgagnon           #+#    #+#             */
-/*   Updated: 2022/03/02 14:58:23 by marvin           ###   ########.fr       */
+/*   Updated: 2022/03/02 15:31:28 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,21 @@ char *get_next_line(int fd)
   }
   if (fd < 0 || read(fd, lecture, 0) < 0 || BUFFER_SIZE < 1)
     return (0);
-  while (r_read > 0)
+  while (r_read > 0 && ft_findreturn(buffer) == 0)
   {
     r_read = read(fd,lecture, BUFFER_SIZE);
     lecture[r_read] = '\0';
     buffer = ft_strconcatenate(buffer, lecture);
-    if (ft_findreturn(buffer) > 0)
-      break;
   }
-  r_ligne = ft_bufdup(buffer, ft_findreturn(buffer) + 1);
+  	if (ft_findreturn(buffer) > 0)
+  		r_ligne = ft_bufdup(buffer, ft_findreturn(buffer) + 1);
+	else
+	{
+		r_ligne = ft_bufdup(buffer, ft_strlen(buffer));
+		free(buffer);
+		buffer = NULL;
+		return(r_ligne);
+	}
   if (r_ligne != 0)
   {
     buffer = ft_subbuf(buffer, ft_findreturn(buffer) + 1);
