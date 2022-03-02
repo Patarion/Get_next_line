@@ -12,19 +12,23 @@
 
 #include "get_next_line.h"
 
-char  *ft_bufdup(const char *s, int end)
+char  *ft_bufdup(const char *s)
 {
-  int j;
+  int 	j;
+  int	len;
   char *ptr;
 
   j = 0;
-  ptr = (char *)malloc(sizeof(*ptr) * (end + 1));
+  len = 0;
+  while (s[len] != '\0' && s[len] != '\n')
+	len++;
+  ptr = (char *)malloc(sizeof(*ptr) * (len + 2));
   if (!ptr || s[0] == '\0')
   {
     free(ptr);
     return(0);
   }
-  while (j < end && s[j] != '\0')
+  while (j < len + 1)
   {
     ptr[j] = s[j];
     j++;
@@ -89,7 +93,7 @@ char	*ft_strconcatenate(const char *s1, const char *s2)
   return (ptr);
 }
 
-char	*ft_subbuf(const char *s, int start)
+char	*ft_subbuf(const char *s)
 {
   char  *ptr;
   int   i;
@@ -97,7 +101,9 @@ char	*ft_subbuf(const char *s, int start)
 
   if (!s)
     return(0);
-  i = start;
+  i = 0;
+  while (s[i] != '\0' && s[i] != '\n')
+	i++;
   j = ft_strlen(s) - i;
   ptr = (char *)malloc(sizeof(char*) * (j + 1));
   if (!ptr)
@@ -127,7 +133,7 @@ int ft_findreturn(const char *s)
     {
       if (s[i] == '\n')
       {
-        return (i);
+        return (1);
       }
       i++;
     }
