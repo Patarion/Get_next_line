@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgagnon <marvin@42quebec.com>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 11:18:13 by jgagnon           #+#    #+#             */
-/*   Updated: 2022/01/10 11:18:17 by jgagnon          ###   ########.fr       */
+/*   Updated: 2022/02/28 20:33:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ char  *ft_bufdup(const char *s, int end)
 
   j = 0;
   ptr = (char *)malloc(sizeof(*ptr) * (end + 1));
-  if (!ptr)
+  if (!ptr || s[0] == '\0')
+  {
+    free(ptr);
     return(0);
+  }
   while (j < end && s[j] != '\0')
   {
     ptr[j] = s[j];
@@ -92,11 +95,16 @@ char	*ft_subbuf(const char *s, int start)
   int   i;
   int   j;
 
+  if (!s)
+    return(0);
   i = start;
   j = ft_strlen(s) - i;
-  ptr = (char *)malloc(sizeof(*ptr) * (j + 1));
+  ptr = (char *)malloc(sizeof(char*) * (j + 1));
   if (!ptr)
+  {
+    free(ptr);
     return (0);
+  }
   j = 0;
   while (s[i + j] != '\0')
   {
@@ -108,15 +116,19 @@ char	*ft_subbuf(const char *s, int start)
   return (ptr);
 }
 
-int ft_findreturn(char *s)
+int ft_findreturn(const char *s)
 {
   int i;
 
   i = 0;
+  if (!s)
+    return (0);
   while (s[i] != '\0')
     {
-      if (s[i] == '\n' || s[i] == '\0' || (s[i] == '\\' && s[i + 1] == '0'))
+      if (s[i] == '\n')
+      {
         return (i);
+      }
       i++;
     }
   return (0);
