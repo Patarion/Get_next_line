@@ -26,7 +26,8 @@ char  *ft_bufdup(const char *s, int end);
 int ft_strlen(const char * str);
 char	*ft_strconcatenate(const char *s1, const char *s2);
 char	*ft_subbuf(const char *s, int start);
-int ft_findreturn(char *s);
+int ft_findreturn(const char *s);
 char  *ft_bufbeg(const char *s, int end);
+void *ini_mem(int size);
 
 #endif
