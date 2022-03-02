@@ -3,40 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgagnon <marvin@42quebec.com>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 11:17:33 by jgagnon           #+#    #+#             */
-/*   Updated: 2022/01/10 11:17:37 by jgagnon          ###   ########.fr       */
+/*   Updated: 2022/03/02 14:58:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int   BUFFER_SIZE = 42;
+int   BUFFER_SIZE = 100000;
 
 char *get_next_line(int fd)
 {
   int         r_read;
-  char        lecture[BUFFER_SIZE + 1];
+  char        *lecture;
   char        *r_ligne;
   static char *buffer;
 
-  if ((r_read = read(fd, lecture, 0)) < 0 || BUFFER_SIZE < 1)
-    return(0);
-  while ((r_read = read(fd,lecture, BUFFER_SIZE)) > 0)
+  r_read = 1;
+  lecture = malloc(sizeof(char*) * (BUFFER_SIZE + 1));
+  if (!lecture)
   {
+    free(lecture);
+    return (0);
+  }
+  if (fd < 0 || read(fd, lecture, 0) < 0 || BUFFER_SIZE < 1)
+    return (0);
+  while (r_read > 0)
+  {
+    r_read = read(fd,lecture, BUFFER_SIZE);
+    lecture[r_read] = '\0';
     buffer = ft_strconcatenate(buffer, lecture);
-    if (ft_findreturn(buffer) != 0)
+    if (ft_findreturn(buffer) > 0)
       break;
   }
   r_ligne = ft_bufdup(buffer, ft_findreturn(buffer) + 1);
-  if (r_read > -1 && r_ligne != 0)
+  if (r_ligne != 0)
   {
     buffer = ft_subbuf(buffer, ft_findreturn(buffer) + 1);
     return (r_ligne);
   }
-  else
-    return (0);
+  return (0);
 }
 
 int main (void)
@@ -47,7 +55,7 @@ int main (void)
 
   i = -1;
   fd = open("File.txt", O_RDONLY);
-  while (++i < 8)
+  while (++i < 2)
   {
     r_txt = get_next_line(fd);
     printf("%s", r_txt);
