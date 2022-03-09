@@ -3,139 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 11:18:13 by jgagnon           #+#    #+#             */
-/*   Updated: 2022/02/28 20:33:59 by marvin           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:23:21 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char  *ft_bufdup(const char *s)
+char	*ft_bufbeg(const char *s, int end)
 {
-  int 	j;
-  int	len;
-  char *ptr;
+	int		j;
+	char	*ptr;
 
-  j = 0;
-  len = 0;
-  while (s[len] != '\0' && s[len] != '\n')
-	len++;
-  ptr = (char *)malloc(sizeof(*ptr) * (len + 2));
-  if (!ptr || s[0] == '\0')
-  {
-    free(ptr);
-    return(0);
-  }
-  while (j < len + 1)
-  {
-    ptr[j] = s[j];
-    j++;
-  }
-  ptr[j] = '\0';
-  return (ptr);
+	j = 0;
+	ptr = (char *)malloc(sizeof(*ptr) * (end + 1));
+	if (!ptr)
+		return (0);
+	while (j < end && s[j] != '\0')
+	{
+		ptr[j] = s[j];
+		j++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
 }
 
-char  *ft_bufbeg(const char *s, int end)
+int	ft_strlen(const char *str)
 {
-  int j;
-  char *ptr;
+	int	i;
 
-  j = 0;
-  ptr = (char *)malloc(sizeof(*ptr) * (end + 1));
-  if (!ptr)
-    return(0);
-  while (j < end && s[j] != '\0')
-  {
-    ptr[j] = s[j];
-    j++;
-  }
-  ptr[j] = '\0';
-  return (ptr);
-}
-
-int ft_strlen(const char * str)
-{
-  int i;
-
-  i = 0;
-  while (str[i] != '\0')
-    i++;
-  return (i);
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
 }
 
 char	*ft_strconcatenate(const char *s1, const char *s2)
 {
 	int		i;
-  int   j;
+	int		j;
 	char	*ptr;
 
-  i = 0;
-  j = 0;
-  if (!s2)
-    return (0);
-  else if (!s1)
-    return(ft_bufbeg(s2, ft_strlen(s2)));
-  while (s1[i] != '\0')
-    i++;
-  while (s2[j] != '\0')
-    j++;
-  ptr = (char *)malloc(sizeof(char *) * (i + j + 1));
-  j = -1;
-  i = -1;
-  while (s1[++i] != '\0')
-    ptr[i] = s1[i];
-  while (s2[++j] != '\0')
-    ptr[i + j] = s2[j];
-  ptr[i + j] = '\0';
-  free((char*)s1);
-  return (ptr);
+	i = 0;
+	j = 0;
+	if (!s2)
+		return (0);
+	else if (!s1)
+		return (ft_bufbeg(s2, ft_strlen(s2)));
+	while (s1[i] != '\0')
+		i++;
+	while (s2[j] != '\0')
+		j++;
+	ptr = (char *)malloc(sizeof(char *) * (i + j + 1));
+	j = -1;
+	i = -1;
+	while (s1[++i] != '\0')
+		ptr[i] = s1[i];
+	while (s2[++j] != '\0')
+		ptr[i + j] = s2[j];
+	ptr[i + j] = '\0';
+	free((char *) s1);
+	return (ptr);
 }
 
-char	*ft_subbuf(const char *s)
+int	ft_findreturn(const char *s)
 {
-  char  *ptr;
-  int   i;
-  int   j;
-
-  if (!s)
-    return(0);
-  i = 0;
-  while (s[i] != '\0' && s[i] != '\n')
-	i++;
-  j = ft_strlen(s) - i;
-  ptr = (char *)malloc(sizeof(char*) * (j + 1));
-  if (!ptr)
-  {
-    free(ptr);
-    return (0);
-  }
-  j = 0;
-  while (s[i + j] != '\0')
-  {
-    ptr[j] = s[i + j];
-    j++;
-  }
-  ptr[j] = '\0';
-  free((char*)s);
-  return (ptr);
-}
-
-int ft_findreturn(const char *s)
-{
-  int i;
-
-  i = 0;
-  if (!s)
-    return (0);
-  while (s[i] != '\0')
-    {
-      if (s[i] == '\n')
-      {
-        return (1);
-      }
-      i++;
-    }
-  return (0);
+	if (!s)
+		return (0);
+	while (*s)
+	{
+		if (*s == '\n')
+			return (1);
+		s++;
+	}
+	return (0);
 }
